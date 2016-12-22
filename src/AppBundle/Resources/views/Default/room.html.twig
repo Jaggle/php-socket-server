@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>global room</title>
+    <link rel="stylesheet" href="https://static.yeskn.com/bootstrap.min.css">
+    <script src="https://static.yeskn.com/jquery.min.js"></script>
+
+    <style>
+        body {
+            width: 700px;
+            margin: 50px auto;
+        }
+
+        #btn,#clear,#change{
+            cursor: pointer;
+        }
+
+        p.cu {
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+
+<p class="cu">当前群组成员 <span class="users"></span></p>
+
+<div class="input-group input-group-lg">
+
+    <input name="message" type="text" class="form-control" placeholder="请输入你需要说的话" aria-describedby="sizing-addon1">
+    <span class="input-group-addon" id="btn">发送</span>
+    <span class="input-group-addon" id="clear">清屏</span>
+</div>
+
+
+<div class="message-box">
+    <div class="line">
+        <p class="user"></p>
+
+        <p class="content"></p>
+    </div>
+</div>
+
+<script>
+
+    var G_NAME = prompt('请输入您的名字：');
+    // var G_NAME = "Jake";
+    var G_TYPE = 'add';
+
+    var ws = new WebSocket("ws://127.0.0.1:4959");
+    //var ws = new WebSocket("ws://localhost:4959");
+    ws.onopen = function () {
+        console.log("握手成功");
+        ws.send("message=" + "" + "&type=" + G_TYPE + "&username=" + G_NAME);
+    };
+    ws.onerror = function () {
+        console.log("error");
+    };
+    ws.onmessage = function (e) {
+        var data = $.parseJSON(e.data);
+        console.log(data);
+        if(data.add){
+            var users = data.users;
+            //    console.log(users.length);
+            var user_html = "";
+            for(var user in users){
+                if(!users[user]){
+                    users[user] = '2333';
+                }
+                user_html = user_html+" "+users[user];
+                //     $("span.users").append(" , "+users[user]+" ");
+            }
+            $("span.users").html(user_html);
+
+        }
+        var reg = new RegExp("^:.*");
+        if(reg.test(data.content)){
+            data.content = "2333"+data.content;
+        }
+        $("div.message-box").append(' <div class="line">' +
+                '<p class="user"></p>' +
+                '<p class="content">' +
+                '' + data.content +
+                '</p>' +
+                '</div>');
+    };
+
+
+    $("#btn").click(function () {
+        G_TYPE = 'long';
+        var message = $("input[name='message']").val();
+        ws.send("message=" + message + "&type=" + G_TYPE + "&username=" + G_NAME);
+        $("input[name='message']").val("");
+    });
+
+    $("#clear").click(function () {
+        $(".message-box").html("");
+    });
+
+    $(function () {
+        $("input[name='message']").focus();
+    });
+
+    $(document).keydown(function (event) {
+        if (event.keyCode == 13) {
+            $("#btn").trigger('click');
+        }
+    })
+
+
+</script>
+</body>
+</html>

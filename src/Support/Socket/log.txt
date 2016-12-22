@@ -1,0 +1,29 @@
+server start      : 2016-12-22 17:17:23
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: Resource id #299
+握手成功！
+接收到的字符串为：message=&type=add&username=abc
+接收到的字符串为：message=hello&type=long&username=abc
+server start      : 2016-12-22 17:32:37
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: Resource id #789
+握手成功！
+接收到的字符串为：message=&type=add&username=abc
+接收到的字符串为：message=aass&type=long&username=abc
+接收到的字符串为：message=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&type=long&username=abc
+socket read failed !
+a connection is closed,key:0 close
+已经接受socket连接: Resource id #789
+握手成功！
+接收到的字符串为：message=&type=add&username=hello
+已经接受socket连接: Resource id #789
+握手成功！
+接收到的字符串为：message=&type=add&username=std
+接收到的字符串为：message=你哈&type=long&username=std
+接收到的字符串为：message=good news&type=long&username=std
+socket read failed !
+a connection is closed,key:1 close
+socket read failed !
+a connection is closed,key:2 close
