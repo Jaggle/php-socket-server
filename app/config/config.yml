@@ -34,6 +34,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        socket_host: '%socket.host%'
+        socket_port: '%socket.port%'
 
 # Doctrine Configuration
 doctrine:

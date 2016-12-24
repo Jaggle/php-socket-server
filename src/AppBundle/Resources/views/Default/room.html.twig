@@ -47,7 +47,7 @@
     var G_NAME = prompt('请输入您的名字：');
     var G_TYPE = 'add';
 
-    var ws = new WebSocket("ws://127.0.0.1:4959");
+    var ws = new WebSocket("ws://{{ socket_host }}:{{ socket_port }}");
     ws.onopen = function () {
         console.log("握手成功");
         var message = {

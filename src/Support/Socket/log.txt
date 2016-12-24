@@ -283,3 +283,11 @@ server is running...
 [chat 2016-12-24 07:05:53]{"message":"","type":"add","username":"hello"}
 [chat 2016-12-24 07:06:00]{"message":"世界，你好","type":"long","username":"hello"}
 a connection is closed,key:0
+server start      : 2016-12-24 07:12:43
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 07:13:19]{"message":"","type":"add","username":"dsd"}
+[chat 2016-12-24 07:13:21]{"message":"sdsd","type":"long","username":"dsd"}
+[chat 2016-12-24 07:13:22]{"message":"dsds","type":"long","username":"dsd"}

@@ -28,8 +28,9 @@ class RunSocketCommand extends ContainerAwareCommand
 		if (!function_exists('socket_create')) {
 			throw new \RuntimeException('We need function socket_create to go on...');
 		}
-		$cfg = new Config();
-		$socket = new Socket($cfg->getHost(), $cfg->getPort(), $this->getContainer());
+		$host = $this->getContainer()->getParameter('socket.host');
+		$port = $this->getContainer()->getParameter('socket.port');
+		$socket = new Socket($host, $port, $this->getContainer());
 		$socket->run();
 	}
 }
