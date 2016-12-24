@@ -9,56 +9,63 @@
 namespace Support\Socket;
 
 
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 class Socket
 {
-	public $sockets;    //所有连接对象
-	public $users;      //用户列表数组
-	public $master;     //socket对象
+	public $sockets;
+	
+	/**
+	 * @var ClientUserCollection
+	 */
+	public $users;
+	public $master;
+	private $container;
+	
+	/**
+	 * @var EntityManager
+	 */
+	private $em;
 
-	public function __construct($address, $port)
+	public function __construct($address, $port, ContainerInterface $container)
 	{
 		$this->master = $this->WebSocket($address, $port);
-		$this->sockets = array('s' => $this->master);
+		$this->sockets = array('master' => $this->master);
+		$this->users = new ClientUserCollection();
+		$this->container = $container;
+		$this->em = $container->get('doctrine')->getManager();
 	}
 
 
-	function run()
+	public function run()
 	{
 		$this->e('server is running...');
 		while (true) {
-			echo "hello,world";
-			$changes = $this->sockets;
-			$write = null;
-			$except = NULL;
-			socket_select($changes, $write, $except, NULL);     //
-			foreach ($changes as $sock) {
-				if ($sock == $this->master) {                   //查找到当前的客户端
+			$reads = $this->sockets;
+			$writes = null;
+			$excepts = null;
+			socket_select($reads, $writes, $excepts, null);
+			foreach ($reads as $sock) {
+				if ($sock == $this->master) {
 					$client = socket_accept($this->master);
-					$this->e('已经接受socket连接: ' . $this->master);
+					$this->e('已经接受socket连接: ');
 					$this->sockets[] = $client;
-					$this->users[] = array(
-						'socket' => $client,
-						'hasHandShake' => false,
-					);
+					$this->users->add(new ClientUser($client, false));
 				} else {
 					$len = socket_recv($sock, $buffer, 2048, 0);
-					if ($len == 0) {
-						//$this->e("socket_read() failed reason: " . $len . "\n");
-						$this->e("socket read failed !");
-					}
 					$k = $this->search($sock);
-					if ($len < 7) {                         //如果$len的长度小于7，那么关闭这个客户端的链接
-						$name = $this->users[$k]['username'];
+					if ($len < 7) {
+						$name = $this->users->get($k)->getUsername();
 						$this->close($sock);
-						$this->send2($name, $k);
+						$this->sendDisconnectMessage($name, $k);
 						continue;
 					}
-					if (!$this->users[$k]['hasHandShake']) {      //尚未握手，先进行握手
+					$clientUser = $this->users->get($k);
+					if (!$clientUser->isHandshaked()) {
 						$this->handShake($k, $buffer);
-						//parse_str($buffer,$g);
-						//$this->users[$k]['username']  = $g['username'];
-					} else {                              //已经握手，开始双工通信
-						$buffer = $this->uncode($buffer);
+					} else {
+						$buffer = $this->unPack($buffer);
 						$this->send($k, $buffer);
 					}
 				}
@@ -69,28 +76,28 @@ class Socket
 	}
 
 	/**
-	 * 寻找$this->sockets中是否含有$sock[socket对象]，如果存在，那么删除他
 	 * @param $sock     resource    socket对象
 	 */
-	function close($sock)
+	public function close($sock)
 	{
 		$k = array_search($sock, $this->sockets);
 		socket_close($sock);
 		unset($this->sockets[$k]);
-		unset($this->users[$k]);
-		$this->e("a connection is closed,key:$k close");
+		$this->users->remove($k);
+		$this->e("a connection is closed,key:$k");
 	}
 
 	/**
-	 * 在用户数组中查找一个socket对象，如果存在，则返回属于该对象的用户的键
-	 * users是一个当前所有用户的数组，二维数组
 	 * @param $sock
 	 * @return bool|int|string
 	 */
-	function search($sock)
+	public function search($sock)
 	{
-		foreach ($this->users as $k => $v) {
-			if ($sock == $v['socket'])
+		/**
+		 * @var ClientUser $v
+		 */
+		foreach ($this->users->toArray() as $k => $v) {
+			if ($sock == $v->getSocket())
 				return $k;
 		}
 		return false;
@@ -99,11 +106,11 @@ class Socket
 	/**
 	 * 创建并且监听一个socket服务器,
 	 *
-	 * @param $address
-	 * @param $port
+	 * @param string $address
+	 * @param int $port
 	 * @return resource 返回当前当前socket服务对象
 	 */
-	function WebSocket($address, $port)
+	public function WebSocket($address, $port)
 	{
 		$server = \socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		socket_set_option($server, SOL_SOCKET, SO_REUSEADDR, 1);
@@ -115,13 +122,12 @@ class Socket
 	}
 
 	/**
-	 * buffer应该是客户端的连接信息，$k是客户端标识[键]
 	 *
 	 * @param $k
 	 * @param $buffer
 	 * @return bool
 	 */
-	function handShake($k, $buffer)
+	public function handShake($k, $buffer)
 	{
 		$buf = substr($buffer, strpos($buffer, 'Sec-WebSocket-Key:') + 18);    //返回buffer的子字符串
 		$key = trim(substr($buf, 0, strpos($buf, "\r\n")));       //返回buffer的第一行
@@ -134,8 +140,8 @@ class Socket
 		$new_message .= "Connection: Upgrade\r\n";
 		$new_message .= "Sec-WebSocket-Accept: " . $new_key . "\r\n\r\n";
 
-		socket_write($this->users[$k]['socket'], $new_message, strlen($new_message));
-		$this->users[$k]['hasHandShake'] = true;
+		socket_write($this->users->get($k)->getSocket(), $new_message, strlen($new_message));
+		$this->users->get($k)->setHandshaked(true);
 		$this->e('握手成功！');
 		return true;
 
@@ -146,7 +152,7 @@ class Socket
 	 * @param $str
 	 * @return bool|string
 	 */
-	function uncode($str)
+	public function unPack($str)
 	{
 		$mask = array();
 		$data = '';
@@ -176,8 +182,9 @@ class Socket
 	 * @param $msg
 	 * @return string
 	 */
-	function code($msg)
+	public function pack(array $msg)
 	{
+		$msg = json_encode($msg);
 		$msg = preg_replace(array('/\r$/', '/\n$/', '/\r\n$/',), '', $msg);
 		$frame = array();
 		$frame[0] = '81';
@@ -193,7 +200,7 @@ class Socket
 	 * @param $data
 	 * @return string
 	 */
-	function ord_hex($data)
+	public function ord_hex($data)
 	{
 		$msg = '';
 		$l = strlen($data);
@@ -206,65 +213,77 @@ class Socket
 	/**
 	 * 发送消息的方法
 	 * @param $k    int     规定发送的用户的id
-	 * @param $msg  string  是一个形如 query string的字符串 例如 message=what the fuck&type=add
+	 * @param $receive  string  接收到的字符
 	 */
-	function send($k, $msg)
+	public function send($k, $receive)
 	{
-		if(empty($msg))
+		if(empty($receive)) {
 			return;
-		$this->e('接收到的字符串为：' . $msg);
-		parse_str($msg, $g);  //parse_str() 函数把查询字符串msg解析到变量数组g中。
-		//$g = $this->parse_query($msg);
-		//var_dump($g);
-		$ar = array();
-		if ($g['type'] == 'add') {                      //maybe 第一个进入房间，然后服务器第一次返回欢迎消息
-			$this->users[$k]['username'] = $g['username'];
-			$ar['add'] = true;
-			$ar['content'] = '用户' . $g['username'] . '加入了聊天室';
-			$ar['users'] = $this->getusers();
-			$key = 'all';
-		} else if ($g['type'] == 'long') {
-			$ar['content'] = $g['username'] . ": " . $g['message'];
-			$key = 'all';
-		} else {
-			$key = 'all';       //默认向所有用户发送消息
 		}
-		$msg = json_encode($ar);
-		//var_dump("will send message : " . $msg);
-		$msg = $this->code($msg);
-		$this->send1($k, $msg, $key);
-		//socket_write($this->users[$k]['socket'],$msg,strlen($msg));
+
+		$this->e('[chat ' . date("Y-m-d H:i:s") . ']' . $receive);
+
+		$receive = json_decode($receive, true);
+		$res = array();
+
+		if ($receive['type'] == 'add') {
+			$this->users->get($k)->setUsername($receive['username']);
+			$res = array(
+				'add' => true,
+				'content' => '用户' . $receive['username'] . '加入了聊天室',
+				'users' => $this->getUsers()
+			);
+		} else if ($receive['type'] == 'long') {
+			$res['content'] = $receive['username'] . ": " . $receive['message'];
+
+			$repository = $this->em->getRepository('AppBundle:Message');
+			$repository->create($receive['username'], 'all', $res['content']);
+		}
+
+		$key = 'all';
+		$msg = $this->pack($res);
+
+
+
+		$this->sendMessage($k, $msg, $key);
 	}
 
 	/**
 	 * 获取用户名字的列表
 	 * @return array
 	 */
-	function getusers()
+	public function getUsers()
 	{
 		$ar = array();
-		foreach ($this->users as $k => $v) {
-			$ar[$k] = $v['username'];
+
+		/**
+		 * @var ClientUser $v
+		 */
+		foreach ($this->users->toArray() as $k => $v) {
+			$ar[] = $v->getUsername();
 		}
+
 		return $ar;
 	}
 
 	/**
 	 * 被send()方法调用，默认向所有用户发送消息
-	 * @param $k        int      规定被发送人的id
+	 * @param $from        int      规定被发送人的id
 	 * @param $str      string   发送的字符串
-	 * @param $key      string   规定向哪个用户写入消息
+	 * @param $to      string   规定向哪个用户写入消息
 	 */
-	function send1($k, $str, $key = 'all')
+	public function sendMessage($from, $str, $to = 'all')
 	{
-		if ($key == 'all') {
-			foreach ($this->users as $v) {
-				socket_write($v['socket'], $str, strlen($str));     //向每一个client写入消息
+		if ($to == 'all') {
+			/**
+			 * @var ClientUser $v
+			 */
+			foreach ($this->users->toArray() as $v) {
+				socket_write($v->getSocket(), $str, strlen($str));     //向每一个client写入消息
 			}
 		} else {
-			if ($k != $key)
-				socket_write($this->users[$k]['socket'], $str, strlen($str));
-			socket_write($this->users[$key]['socket'], $str, strlen($str));
+			if ($from != $to)
+				socket_write($this->users->get($to)->getSocket(), $str, strlen($str));
 		}
 	}
 
@@ -273,40 +292,28 @@ class Socket
 	 * @param $username
 	 * @param $k
 	 */
-	function send2($username, $k)
+	public function sendDisconnectMessage($username, $k)
 	{
-		$ar['remove'] = true;
-		$ar['removekey'] = $k;
-		$ar['content'] = $username . '退出聊天室';
-		$str = $this->code(json_encode($ar));
-		$this->send1(false, $str, 'all');
+		$response = array(
+			'remove' => true,
+			'leave' =>true,
+			'removeKey' => $k,
+			'content' => $username . '退出聊天室',
+			'users' => $this->getUsers()
+		);
+		$str = $this->pack($response);
+		$this->sendMessage(false, $str, 'all');
 	}
 
 	/**
 	 * 日志记录
 	 * @param $str
 	 */
-	function e($str)
+	public function e($str)
 	{
 		$path = dirname(__FILE__) . '/log.txt';
 		$str = $str . "\n";
 		error_log($str, 3, $path);
 		echo iconv('utf-8', 'gbk//IGNORE', $str);
-	}
-
-	/**
-	 * 解析 查询字符串
-	 * @param   $str    string  需要解析的字符串
-	 * @return array or false
-	 */
-	function parse_query($str)
-	{
-		$result = array();
-		$arr = explode('&', $str);
-		foreach ($arr as $key => $value) {
-			$arr2 = explode('=', $value);
-			$result[$arr2[0]] = $arr2[1];
-		}
-		return $result;
 	}
 }

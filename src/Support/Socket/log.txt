@@ -27,3 +27,259 @@ socket read failed !
 a connection is closed,key:1 close
 socket read failed !
 a connection is closed,key:2 close
+server start      : 2016-12-24 02:45:27
+listening on      : 127.0.0.1 port 4959
+server is running...
+server start      : 2016-12-24 02:45:56
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: Resource id #299
+握手成功！
+接收到的字符串为：message=&type=add&username=sdd
+server start      : 2016-12-24 05:49:19
+listening on      : 127.0.0.1 port 4959
+server is running...
+server start      : 2016-12-24 05:50:01
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+server start      : 2016-12-24 05:51:08
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+socket read failed !
+a connection is closed,key:0
+已经接受socket连接: 
+握手成功！
+socket read failed !
+a connection is closed,key:1
+已经接受socket连接: 
+握手成功！
+socket read failed !
+a connection is closed,key:2
+已经接受socket连接: 
+握手成功！
+server start      : 2016-12-24 05:54:07
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+已经接受socket连接: 
+握手成功！
+server start      : 2016-12-24 05:59:32
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 05:59:45]
+server start      : 2016-12-24 06:00:14
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:00:19]message=&type=add&username=dsds
+[chat 2016-12-24 06:00:29]{"message":"hello, world","type":"long","username":"dsds"}
+[chat 2016-12-24 06:00:44]{"message":"你好，傻逼","type":"long","username":"dsds"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:02:26]{"message":"","type":"add","username":"sdddd"}
+socket read failed !
+a connection is closed,key:1
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:03:05]{"message":"","type":"add","username":"sd"}
+socket read failed !
+a connection is closed,key:0
+[chat 2016-12-24 06:03:19]{"message":"hello,world","type":"long","username":"sd"}
+socket read failed !
+a connection is closed,key:2
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:03:52]{"message":"","type":"add","username":"sss"}
+socket read failed !
+a connection is closed,key:3
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:04:38]{"message":"","type":"add","username":"dsdsd"}
+socket read failed !
+a connection is closed,key:4
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:05:05]{"message":"","type":"add","username":"dsdsd"}
+socket read failed !
+a connection is closed,key:5
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:06:38]{"message":"","type":"add","username":"dsd"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:06:44]{"message":"","type":"add","username":"dsdd"}
+[chat 2016-12-24 06:06:51]{"message":"sadsd","type":"long","username":"dsd"}
+[chat 2016-12-24 06:06:54]{"message":"asdsdd","type":"long","username":"dsdd"}
+socket read failed !
+a connection is closed,key:6
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:09:05]{"message":"","type":"add","username":"dd"}
+socket read failed !
+a connection is closed,key:8
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:09:57]{"message":"","type":"add","username":"ddddd"}
+socket read failed !
+a connection is closed,key:9
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:10:26]{"message":"","type":"add","username":"sdsd"}
+socket read failed !
+a connection is closed,key:10
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:10:34]{"message":"","type":"add","username":"dsd"}
+socket read failed !
+a connection is closed,key:11
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:11:38]{"message":"","type":"add","username":"dsds"}
+socket read failed !
+a connection is closed,key:12
+socket read failed !
+a connection is closed,key:7
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:11:46]{"message":"","type":"add","username":"dsdsd"}
+socket read failed !
+a connection is closed,key:13
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:11:59]{"message":"","type":"add","username":"sdsdsdsdsssssssssssssssssss"}
+socket read failed !
+a connection is closed,key:14
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:12:13]{"message":"","type":"add","username":"sdsd"}
+[chat 2016-12-24 06:12:24]{"message":"asdsa","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:26]{"message":"dsdsd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:28]{"message":"dsdsdsd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:31]{"message":"dsdsd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:32]{"message":"dsdsd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:46]{"message":"sdssfd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:47]{"message":"fdf","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:51]{"message":"sdddddddd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:12:59]{"message":"sdsd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:13:00]{"message":"adssd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:13:01]{"message":"asdsad","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:13:02]{"message":"sdsd","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:13:06]{"message":"asdasasdfafasfdsadfsadsadfsad","type":"long","username":"sdsd"}
+[chat 2016-12-24 06:13:23]{"message":"asasasas","type":"long","username":"sdsd"}
+socket read failed !
+a connection is closed,key:15
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:14:03]{"message":"","type":"add","username":"dsdsds"}
+server start      : 2016-12-24 06:15:13
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:15:18]{"message":"","type":"add","username":"dsd"}
+socket read failed !
+a connection is closed,key:0
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:16:18]{"message":"","type":"add","username":"dsd"}
+socket read failed !
+a connection is closed,key:1
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:16:21]{"message":"","type":"add","username":"sds"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:16:33]{"message":"","type":"add","username":"abc"}
+[chat 2016-12-24 06:16:41]{"message":"dsd","type":"long","username":"sds"}
+[chat 2016-12-24 06:16:47]{"message":"你好哦","type":"long","username":"sds"}
+socket read failed !
+a connection is closed,key:2
+server start      : 2016-12-24 06:18:33
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:18:39]{"message":"","type":"add","username":"sd"}
+[chat 2016-12-24 06:18:43]{"message":"dssd","type":"long","username":"sd"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:18:52]{"message":"","type":"add","username":"ddds"}
+a connection is closed,key:1
+server start      : 2016-12-24 06:21:28
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:21:32]{"message":"","type":"add","username":"sdsdsd"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:21:39]{"message":"","type":"add","username":"jake"}
+a connection is closed,key:0
+a connection is closed,key:1
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:23:21]{"message":"","type":"add","username":"aa"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:23:30]{"message":"","type":"add","username":"hello"}
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:23:39]{"message":"","type":"add","username":"你好"}
+a connection is closed,key:4
+[chat 2016-12-24 06:24:08]{"message":"有人吗？","type":"long","username":"aa"}
+[chat 2016-12-24 06:24:14]{"message":"有啊","type":"long","username":"hello"}
+server start      : 2016-12-24 06:49:49
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:49:55]{"message":"","type":"add","username":"sdsds"}
+server start      : 2016-12-24 06:51:48
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:51:53]{"message":"","type":"add","username":"d"}
+server start      : 2016-12-24 06:54:01
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:54:07]{"message":"","type":"add","username":"dss"}
+[chat 2016-12-24 06:54:38]{"message":"dsafsadf","type":"long","username":"dss"}
+server start      : 2016-12-24 06:55:54
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:55:56]{"message":"","type":"add","username":"dsdsdd"}
+[chat 2016-12-24 06:56:00]{"message":"d","type":"long","username":"dsdsdd"}
+server start      : 2016-12-24 06:59:27
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 06:59:33]{"message":"","type":"add","username":"sasaas"}
+[chat 2016-12-24 06:59:36]{"message":"sss","type":"long","username":"sasaas"}
+server start      : 2016-12-24 07:05:10
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 07:05:17]{"message":"","type":"add","username":"sd"}
+[chat 2016-12-24 07:05:20]{"message":"sddd","type":"long","username":"sd"}
+server start      : 2016-12-24 07:05:45
+listening on      : 127.0.0.1 port 4959
+server is running...
+已经接受socket连接: 
+握手成功！
+[chat 2016-12-24 07:05:53]{"message":"","type":"add","username":"hello"}
+[chat 2016-12-24 07:06:00]{"message":"世界，你好","type":"long","username":"hello"}
+a connection is closed,key:0

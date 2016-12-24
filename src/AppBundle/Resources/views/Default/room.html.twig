@@ -24,7 +24,7 @@
 <body>
 
 
-<p class="cu">当前群组成员 <span class="users"></span></p>
+<p class="cu">当前群组成员(共<span class="count"></span>人) : <span class="users"></span></p>
 
 <div class="input-group input-group-lg">
 
@@ -45,14 +45,17 @@
 <script>
 
     var G_NAME = prompt('请输入您的名字：');
-    // var G_NAME = "Jake";
     var G_TYPE = 'add';
 
     var ws = new WebSocket("ws://127.0.0.1:4959");
-    //var ws = new WebSocket("ws://localhost:4959");
     ws.onopen = function () {
         console.log("握手成功");
-        ws.send("message=" + "" + "&type=" + G_TYPE + "&username=" + G_NAME);
+        var message = {
+            message : '',
+            type: 'add',
+            username: G_NAME
+        };
+        ws.send(JSON.stringify(message));
     };
     ws.onerror = function () {
         console.log("error");
@@ -60,19 +63,12 @@
     ws.onmessage = function (e) {
         var data = $.parseJSON(e.data);
         console.log(data);
-        if(data.add){
+        if(data.add || data.leave){
             var users = data.users;
-            //    console.log(users.length);
-            var user_html = "";
-            for(var user in users){
-                if(!users[user]){
-                    users[user] = '2333';
-                }
-                user_html = user_html+" "+users[user];
-                //     $("span.users").append(" , "+users[user]+" ");
-            }
-            $("span.users").html(user_html);
+            var user_html = users.join(',');
 
+            $("span.users").html(user_html);
+            $("span.count").html(users.length);
         }
         var reg = new RegExp("^:.*");
         if(reg.test(data.content)){
@@ -89,9 +85,14 @@
 
     $("#btn").click(function () {
         G_TYPE = 'long';
-        var message = $("input[name='message']").val();
-        ws.send("message=" + message + "&type=" + G_TYPE + "&username=" + G_NAME);
-        $("input[name='message']").val("");
+        var $input =  $("input[name='message']");
+        var message = {
+            message : $input.val(),
+            type : G_TYPE,
+            username: G_NAME
+        };
+        ws.send(JSON.stringify(message));
+        $input.val("");
     });
 
     $("#clear").click(function () {
