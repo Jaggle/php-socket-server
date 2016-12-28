@@ -45,70 +45,70 @@
 
 <script>
 
-    var G_NAME = prompt('请输入您的名字：');
-    var G_TYPE = 'add';
+    {#var G_NAME = prompt('请输入您的名字：');#}
+    {#var G_TYPE = 'add';#}
 
-    var ws = new WebSocket("ws://{{ socket_host }}:{{ socket_port }}");
-    ws.onopen = function () {
-        console.log("握手成功");
-        var message = {
-            message : '',
-            type: 'add',
-            username: G_NAME
-        };
-        ws.send(JSON.stringify(message));
-    };
-    ws.onerror = function () {
-        console.log("error");
-    };
-    ws.onmessage = function (e) {
-        var data = $.parseJSON(e.data);
-        console.log(data);
-        if(data.add || data.leave){
-            var users = data.users;
-            var user_html = users.join(',');
+    {#var ws = new WebSocket("ws://{{ socket_host }}:{{ socket_port }}");#}
+    {#ws.onopen = function () {#}
+        {#console.log("握手成功");#}
+        {#var message = {#}
+            {#message : '',#}
+            {#type: 'add',#}
+            {#username: G_NAME#}
+        {#};#}
+        {#ws.send(JSON.stringify(message));#}
+    {#};#}
+    {#ws.onerror = function () {#}
+        {#console.log("error");#}
+    {#};#}
+    {#ws.onmessage = function (e) {#}
+        {#var data = $.parseJSON(e.data);#}
+        {#console.log(data);#}
+        {#if(data.add || data.leave){#}
+            {#var users = data.users;#}
+            {#var user_html = users.join(',');#}
 
-            $("span.users").html(user_html);
-            $("span.count").html(users.length);
-        }
-        var reg = new RegExp("^:.*");
-        if(reg.test(data.content)){
-            data.content = "2333"+data.content;
-        }
-        $("div.message-box").append(' <div class="line">' +
-                '<p class="user"></p>' +
-                '<p class="content">' +
-                '' + data.content +
-                '</p>' +
-                '</div>');
-    };
+            {#$("span.users").html(user_html);#}
+            {#$("span.count").html(users.length);#}
+        {#}#}
+        {#var reg = new RegExp("^:.*");#}
+        {#if(reg.test(data.content)){#}
+            {#data.content = "2333"+data.content;#}
+        {#}#}
+        {#$("div.message-box").append(' <div class="line">' +#}
+                {#'<p class="user"></p>' +#}
+                {#'<p class="content">' +#}
+                {#'' + data.content +#}
+                {#'</p>' +#}
+                {#'</div>');#}
+    {#};#}
 
 
-    $("#btn").click(function () {
-        G_TYPE = 'long';
-        var $input =  $("input[name='message']");
-        var message = {
-            message : $input.val(),
-            type : G_TYPE,
-            username: G_NAME
-        };
-        ws.send(JSON.stringify(message));
-        $input.val("");
-    });
+    {#$("#btn").click(function () {#}
+        {#G_TYPE = 'long';#}
+        {#var $input =  $("input[name='message']");#}
+        {#var message = {#}
+            {#message : $input.val(),#}
+            {#type : G_TYPE,#}
+            {#username: G_NAME#}
+        {#};#}
+        {#ws.send(JSON.stringify(message));#}
+        {#$input.val("");#}
+    {#});#}
 
-    $("#clear").click(function () {
-        $(".message-box").html("");
-    });
+    {#$("#clear").click(function () {#}
+        {#$(".message-box").html("");#}
+    {#});#}
 
-    $(function () {
-        $("input[name='message']").focus();
-    });
+    {#$(function () {#}
+        {#$("input[name='message']").focus();#}
+    {#});#}
 
-    $(document).keydown(function (event) {
-        if (event.keyCode == 13) {
-            $("#btn").trigger('click');
-        }
-    })
+    {#$(document).keydown(function (event) {#}
+        {#if (event.keyCode == 13) {#}
+            {#$("#btn").trigger('click');#}
+        {#}#}
+    {#})#}
 
     /// socket.io start
 
